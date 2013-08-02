@@ -6,7 +6,7 @@
   <script src="build/build.js"></script>
   <link rel="stylesheet" href="build/build.css" />
   <style type="text/css">
-    #wrapper {
+    .wrapper {
       margin: 50px auto;
       max-width: 860px;
       width: 80%;
@@ -14,18 +14,23 @@
   </style>
 </head>
 <body>
-  <div id="wrapper">
+  <div class="wrapper">
     <div style="margin-bottom: 20px">Color changed to: <span id="color"></span></div>
+    <div class="color-field">
+      <label for="input-color">Colors</label>
+      <input id="input-color" type="color" />
+    </div>
   </div>
   <script type="text/javascript">
     var ColorPicker = require('color-picker');
     var picker = new ColorPicker();
-    var wrapper = document.getElementById('wrapper');
     var show = document.getElementById('color');
+    var input = document.getElementById('input-color');
+
+    picker.takeover(input);
     picker.on('change', function(color) {
       show.innerHTML = color;
     });
-    wrapper.appendChild(picker.element);
   </script>
 </body>
 </html>
