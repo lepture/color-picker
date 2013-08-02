@@ -115,6 +115,7 @@ function createEditor(color) {
   input.value = color;
   input.className = 'color-picker-editor';
   input.style.borderColor = color;
+  input.setAttribute('maxlength', 7);
   return input;
 }
 
