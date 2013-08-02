@@ -59,6 +59,15 @@ var color = picker.value();
 picker.value('#ff33cc')
 ```
 
+### .takeover(input)
+
+Hide the input, and take position of it.
+
+```
+var input = document.querySelector('input.profile-color');
+picker.takeover(input);
+```
+
 ## Event
 
 Color picker only emit a `change` event.

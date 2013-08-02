@@ -73,9 +73,9 @@ ColorPicker.prototype.value = function(color) {
 };
 
 /**
- * Replace the position of the `input` dom.
+ * Take over the position of the `input` dom.
  */
-ColorPicker.prototype.replace = function(input) {
+ColorPicker.prototype.takeover = function(input) {
   if (input.value && validColor(input.value)) {
     // reset default color
     this.change(input.value);
