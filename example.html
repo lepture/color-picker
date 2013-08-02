@@ -10,7 +10,9 @@
   <script type="text/javascript">
     var ColorPicker = require('color-picker');
     var picker = new ColorPicker();
-    console.log(picker.element)
+    picker.on('change', function(color) {
+      console.log(color);
+    });
     document.body.appendChild(picker.element);
   </script>
 </body>
