@@ -13,6 +13,9 @@ Install with [component(1)](http://component.io):
 
     $ component install lepture/color-picker
 
+Install with [spm](https://github.com/spmjs/spm2):
+
+    $ spm install lepture/color-picker
 
 ## Example
 
