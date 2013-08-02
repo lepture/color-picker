@@ -4,8 +4,8 @@ var emitter = require('emitter');
 module.exports = ColorPicker;
 
 
-// http://developer.android.com/design/style/color.html
 var colors = [
+  // colors from http://developer.android.com/design/style/color.html
   '#33b5e5',
   '#aa66cc',
   '#99cc00',
@@ -16,7 +16,15 @@ var colors = [
   '#9933cc',
   '#669900',
   '#ff8800',
-  '#cc0000'
+  '#cc0000',
+
+  // colors from http://purecss.io/
+  '#0e90d2',
+  '#8058a5',
+  '#5eb95e',
+  '#dd514c',
+  '#f37b1d',
+  '#fad232'
 ];
 
 function ColorPicker(choices, color) {
