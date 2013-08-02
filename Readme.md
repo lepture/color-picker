@@ -2,6 +2,8 @@
 
 Color picker with predefined colors.
 
+![color-picker](https://f.cloud.github.com/assets/290496/898777/86a075da-fb21-11e2-8a77-1e95fc072976.png)
+
 ## Installation
 
 Install with [component(1)](http://component.io):
