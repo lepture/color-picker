@@ -64,4 +64,18 @@ describe('Color Picker', function() {
     });
     picker.change('#999999');
   });
+
+  it('can take over the input', function() {
+    var input = document.createElement('input');
+    input.value = '#000000';
+    document.body.appendChild(input);
+
+    var picker = new ColorPicker();
+    picker.takeover(input);
+    equal(picker.value(), '#000000');
+    equal(input.style.display, 'none');
+
+    picker.change('#ff00cc');
+    equal(input.value, '#ff00cc');
+  });
 });
