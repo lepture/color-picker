@@ -1,7 +1,7 @@
 {
   "family": "lepture",
   "name": "color-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Color picker with predefined colors.",
   "homepage": "http://lab.lepture.com/color-picker/",
   "repository": {
