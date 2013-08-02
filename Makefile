@@ -28,4 +28,13 @@ spm:
 	@cp color-picker.css src/
 	@spm build
 
-.PHONY: clean coverage
+gh-pages: components
+	@component build
+	@rm -fr gh-pages
+	@mkdir gh-pages
+	@mv build gh-pages/
+	@cp index.html gh-pages/
+	@ghp-import gh-pages -p
+	@rm -fr gh-pages
+
+.PHONY: clean coverage gh-pages
