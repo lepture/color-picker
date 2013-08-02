@@ -5,7 +5,7 @@ Color picker with predefined colors.
 [![Build Status](https://travis-ci.org/lepture/color-picker.png?branch=master)](https://travis-ci.org/lepture/color-picker)
 [![Coverage Status](https://coveralls.io/repos/lepture/color-picker/badge.png)](https://coveralls.io/r/lepture/color-picker)
 
-![color-picker](https://f.cloud.github.com/assets/290496/898777/86a075da-fb21-11e2-8a77-1e95fc072976.png)
+[![color-picker](https://f.cloud.github.com/assets/290496/898777/86a075da-fb21-11e2-8a77-1e95fc072976.png)](http://lab.lepture.com/color-picker/)
 
 ## Installation
 
