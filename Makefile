@@ -16,4 +16,9 @@ coverage:
 	@mocha-browser test/index.html -R html-cov > coverage.html
 	@mv bak.js index.js
 
+travis:
+	@node_modules/.bin/component install --dev
+	@node_modules/.bin/component build --dev
+	@node_modules/.bin/mocha-browser test/index.html
+
 .PHONY: clean coverage

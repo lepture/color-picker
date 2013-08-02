@@ -1,0 +1,19 @@
+{
+  "family": "lepture",
+  "name": "color-picker",
+  "version": "0.0.1",
+  "description": "Color picker with predefined colors.",
+
+  "devDependencies": {
+    "component": "*",
+    "mocha-browser": "*"
+  },
+
+  "scripts": {
+    "test": "make travis"
+  },
+
+  "spm": {
+    "output": ["color-picker.js"]
+  }
+}
