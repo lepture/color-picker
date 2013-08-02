@@ -12,32 +12,73 @@
       }
     });
   </script>
-  <link rel="stylesheet" href="color-picker.css" />
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21475122-5']);
+    _gaq.push(['_setCustomVar', 1, 'Repo', 'lepture/color-picker']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      if (location.port || !/^http/.test(location.protocol)) {
+        return;
+      }
+
+      ga.src = '//www.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="src/color-picker.css" />
   <style type="text/css">
     .wrapper {
-      margin: 50px auto;
+      font: 400 18px/1.62 "Georgia", serif;
+      color: #333332;
+      margin: 50px auto 20px;
       max-width: 860px;
       width: 80%;
+    }
+    .footer {
+      margin-top: 100px;
+      color: #dcdcdd;
+      font-size: 14px;
+    }
+    .footer a {
+      color: #dcdcdd;
+    }
+    #changelog {
+      margin-left: 0;
+      padding-left: 18px;
+      list-style-type: square;
     }
   </style>
 </head>
 <body>
   <div class="wrapper">
-    <div style="margin-bottom: 20px">Color changed to: <span id="color"></span></div>
     <div class="color-field">
       <label for="input-color">Colors</label>
       <input id="input-color" type="color" />
     </div>
+    <ul id="changelog">
+    </ul>
+    <div class="footer">
+      <p>A component by <a href="http://lepture.com">lepture</a>.</p>
+    </div>
   </div>
+  <a href="https://github.com/lepture/color-picker" class="github">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" class="github">
+  </a>
   <script type="text/javascript">
     seajs.use('./src/color-picker', function(ColorPicker) {
       var picker = new ColorPicker();
-      var show = document.getElementById('color');
+      var changelog = document.getElementById('changelog');
       var input = document.getElementById('input-color');
 
       picker.takeover(input);
       picker.on('change', function(color) {
-        show.innerHTML = color;
+        var li = document.createElement('li');
+        li.innerHTML = color;
+        changelog.insertBefore(li, changelog.firstChild);
       });
     });
   </script>
