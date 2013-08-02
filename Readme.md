@@ -11,7 +11,7 @@ Install with [component(1)](http://component.io):
 
 ## Example
 
-```
+```js
 var ColorPicker = require('color-picker');
 
 var picker = new ColorPicker();
@@ -19,12 +19,46 @@ var picker = new ColorPicker();
 picker.on('change', function(color) {
     console.log(color);
 });
+document.body.appendChild(picker.element);
 ```
 
 ## API
 
+All methods are refered to the instance of `ColorPicker`:
 
+```js
+var picker = new ColorPicker();
+```
 
+### .element
+
+Property element of the color picker.
+
+### .choose(color)
+
+Choose a color, this is used by ColorPicker itself.
+
+### .change(color)
+
+Change a color, this is used by ColorPicker itself.
+
+### .value(color)
+
+Get or set the value.
+
+```js
+var color = picker.value();
+picker.value('#ff33cc')
+```
+
+## Event
+
+Color picker only emit a `change` event.
+
+```js
+picker.on('change', function(color) {
+});
+```
 
 ## License
 
