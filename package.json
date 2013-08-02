@@ -1,7 +1,7 @@
 {
   "family": "lepture",
   "name": "color-picker",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Color picker with predefined colors.",
 
   "devDependencies": {
