@@ -51,6 +51,9 @@ describe('Color Picker', function() {
 
     picker.change('#hg');
     equal('#000000', picker.value());
+
+    picker.change();
+    equal('#000000', picker.value());
   });
 
   it('will emit change event', function(done) {

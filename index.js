@@ -37,7 +37,7 @@ emitter(ColorPicker.prototype);
  */
 ColorPicker.prototype.choose = function(e) {
   var color = e;
-  if (e.preventDefault) {
+  if (e && e.preventDefault) {
     e.preventDefault();
     color = e.target.getAttribute('href');
   }
@@ -50,7 +50,7 @@ ColorPicker.prototype.choose = function(e) {
  */
 ColorPicker.prototype.change = function(e) {
   var color = e;
-  if (e.target) {
+  if (e && e.target) {
     color = e.target.value;
   }
   if (validColor(color)) {
