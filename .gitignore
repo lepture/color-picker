@@ -2,3 +2,6 @@ components
 node_modules
 build
 coverage.html
+sea-modules
+src
+dist

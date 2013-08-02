@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color Picker</title>
+  <script src="http://assets.spmjs.org/seajs/seajs/2.1.0/sea.js"></script>
+  <script type="text/javascript">
+    seajs.config({
+      alias: {
+        "$": "jquery/jquery/1.7.2/jquery",
+        "events": "arale/events/1.1.0/events"
+      }
+    });
+  </script>
+  <link rel="stylesheet" href="color-picker.css" />
+  <style type="text/css">
+    .wrapper {
+      margin: 50px auto;
+      max-width: 860px;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div style="margin-bottom: 20px">Color changed to: <span id="color"></span></div>
+    <div class="color-field">
+      <label for="input-color">Colors</label>
+      <input id="input-color" type="color" />
+    </div>
+  </div>
+  <script type="text/javascript">
+    seajs.use('./src/color-picker', function(ColorPicker) {
+      var picker = new ColorPicker();
+      var show = document.getElementById('color');
+      var input = document.getElementById('input-color');
+
+      picker.takeover(input);
+      picker.on('change', function(color) {
+        show.innerHTML = color;
+      });
+    });
+  </script>
+</body>
+</html>

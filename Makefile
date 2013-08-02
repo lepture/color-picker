@@ -21,4 +21,11 @@ travis:
 	@node_modules/.bin/component build --dev
 	@node_modules/.bin/mocha-browser test/index.html
 
+spm:
+	@rm -fr src
+	@mkdir src
+	@python .transport.py > src/color-picker.js
+	@cp color-picker.css src/
+	@spm build
+
 .PHONY: clean coverage
