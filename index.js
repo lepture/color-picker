@@ -72,6 +72,27 @@ ColorPicker.prototype.value = function(color) {
   this.change(color);
 };
 
+/**
+ * Replace the position of the `input` dom.
+ */
+ColorPicker.prototype.replace = function(input) {
+  if (input.value && validColor(input.value)) {
+    // reset default color
+    this.change(input.value);
+  }
+
+  // render element to the dom
+  input.parentNode.insertBefore(this.element, input);
+
+  // hide original input
+  input.style.display = 'none';
+
+  // bind event
+  this.on('change', function(color) {
+    input.value = color;
+  });
+};
+
 
 /**
  * Create picker with the given `options`.
