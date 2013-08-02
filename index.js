@@ -19,8 +19,9 @@ var colors = [
   '#cc0000'
 ];
 
-function ColorPicker(options) {
-  var picker = createPicker(options);
+function ColorPicker(choices, color) {
+  var picker = createPicker(choices, color);
+
   this.element = picker.picker;
   this.editor = picker.editor;
 
@@ -75,10 +76,17 @@ ColorPicker.prototype.value = function(color) {
 /**
  * Create picker with the given `options`.
  */
-function createPicker(options) {
-  options = options || {};
-  var chooser = createChooser(options.colors || colors);
-  var editor = createEditor(options.defaultColor);
+function createPicker(choices, color) {
+  choices = choices || colors;
+
+  if (!Array.isArray(choices) && !color) {
+    // when `createPicker('#000000')
+    color = choices;
+    choices = colors;
+  }
+
+  var chooser = createChooser(choices);
+  var editor = createEditor(color);
 
   var picker = document.createElement('div');
   picker.className = 'color-picker';

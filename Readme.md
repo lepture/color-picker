@@ -32,6 +32,12 @@ All methods are refered to the instance of `ColorPicker`:
 var picker = new ColorPicker();
 ```
 
+It accepts parameters:
+
+- colors for choosing: `new ColorPicker(['#ffcc00', '#ddccdd'])`
+- default color: `new ColorPicker('#000000')`
+- change both: `new ColorPicker(['#ffcc00', '#ddccdd'], '#000000')`
+
 ### .element
 
 Property element of the color picker.
