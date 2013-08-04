@@ -49,7 +49,7 @@ ColorPicker.prototype.choose = function(e) {
     e.preventDefault();
     color = e.target.getAttribute('href');
   }
-  this.change(color);
+  this.value(color);
 };
 
 
@@ -61,11 +61,7 @@ ColorPicker.prototype.change = function(e) {
   if (e && e.target) {
     color = e.target.value;
   }
-  if (validColor(color)) {
-    this.editor.value = color;
-    this.editor.style.borderColor = color;
-    this.emit('change', color);
-  }
+  this.value(color);
 };
 
 
@@ -74,10 +70,13 @@ ColorPicker.prototype.change = function(e) {
  */
 ColorPicker.prototype.value = function(color) {
   if (!color) {
-    // getter
     return this.editor.value;
   }
-  this.change(color);
+  if (validColor(color)) {
+    this.editor.value = color;
+    this.editor.style.borderColor = color;
+    this.emit('change', color);
+  }
 };
 
 /**
@@ -161,8 +160,5 @@ function createEditor(color) {
  * Check if the color is valid.
  */
 function validColor(color) {
-  if (!color) {
-    return false;
-  }
   return /^#[0-9a-zA-Z]{6}$/.test(color);
 }
