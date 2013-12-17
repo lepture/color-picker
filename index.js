@@ -125,7 +125,7 @@ function createPicker(choices, color) {
     chooser: chooser,
     editor: editor
   };
-};
+}
 
 
 /**
@@ -160,5 +160,5 @@ function createEditor(color) {
  * Check if the color is valid.
  */
 function validColor(color) {
-  return /^#[0-9a-zA-Z]{6}$/.test(color);
+  return color.match(/^#[0-9a-fA-F]{6}$/) || color.match(/^#[0-9a-fA-F]{3}$/);
 }
