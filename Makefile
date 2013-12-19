@@ -34,7 +34,7 @@ gh-pages: components
 	@mkdir gh-pages
 	@mv build gh-pages/
 	@cp index.html gh-pages/
-	@ghp-import gh-pages -p
+	@ghp-import gh-pages -p -n
 	@rm -fr gh-pages
 
 .PHONY: clean coverage gh-pages
