@@ -1,3 +1,6 @@
+.color-picker .color-chooser {
+  line-height: 1;
+}
 .color-picker .color-chooser-color {
   display: inline-block;
   padding: 0;

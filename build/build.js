@@ -26,10 +26,14 @@ function require(path, parent, orig) {
   // perform real require()
   // by invoking the module's
   // registered function
-  if (!module.exports) {
-    module.exports = {};
-    module.client = module.component = true;
-    module.call(this, module.exports, require.relative(resolved), module);
+  if (!module._resolving && !module.exports) {
+    var mod = {};
+    mod.exports = {};
+    mod.client = mod.component = true;
+    module._resolving = true;
+    module.call(this, mod.exports, require.relative(resolved), mod);
+    delete module._resolving;
+    module.exports = mod.exports;
   }
 
   return module.exports;
@@ -239,7 +243,6 @@ exports.unbind = function(el, type, fn, capture){
 
 });
 require.register("component-query/index.js", function(exports, require, module){
-
 function one(selector, el) {
   return el.querySelector(selector);
 }
@@ -259,6 +262,7 @@ exports.engine = function(obj){
   if (!obj.all) throw new Error('.all callback required');
   one = obj.one;
   exports.all = obj.all;
+  return exports;
 };
 
 });
@@ -279,7 +283,7 @@ var proto = Element.prototype;
  * Vendor function.
  */
 
-var vendor = proto.matchesSelector
+var vendor = proto.matches
   || proto.webkitMatchesSelector
   || proto.mozMatchesSelector
   || proto.msMatchesSelector
@@ -310,13 +314,33 @@ function match(el, selector) {
 }
 
 });
-require.register("component-delegate/index.js", function(exports, require, module){
+require.register("discore-closest/index.js", function(exports, require, module){
+var matches = require('matches-selector')
 
+module.exports = function (element, selector, checkYoSelf, root) {
+  element = checkYoSelf ? {parentNode: element} : element
+
+  root = root || document
+
+  // Make sure `element !== document` and `element != null`
+  // otherwise we get an illegal invocation
+  while ((element = element.parentNode) && element !== document) {
+    if (matches(element, selector))
+      return element
+    // After `matches` on the edge case that
+    // the selector matches the root
+    // (when the root is not the document)
+    if (element === root)
+      return  
+  }
+}
+});
+require.register("component-delegate/index.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
 
-var matches = require('matches-selector')
+var closest = require('closest')
   , event = require('event');
 
 /**
@@ -335,9 +359,10 @@ var matches = require('matches-selector')
 
 exports.bind = function(el, selector, type, fn, capture){
   return event.bind(el, type, function(e){
-    if (matches(e.target, selector)) fn(e);
+    var target = e.target || e.srcElement;
+    e.delegateTarget = closest(target, selector, true, el);
+    if (e.delegateTarget) fn.call(el, e);
   }, capture);
-  return callback;
 };
 
 /**
@@ -534,25 +559,7 @@ function parse(event) {
 }
 
 });
-require.register("component-indexof/index.js", function(exports, require, module){
-
-var indexOf = [].indexOf;
-
-module.exports = function(arr, obj){
-  if (indexOf) return arr.indexOf(obj);
-  for (var i = 0; i < arr.length; ++i) {
-    if (arr[i] === obj) return i;
-  }
-  return -1;
-};
-});
 require.register("component-emitter/index.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var index = require('indexof');
 
 /**
  * Expose `Emitter`.
@@ -594,7 +601,8 @@ function mixin(obj) {
  * @api public
  */
 
-Emitter.prototype.on = function(event, fn){
+Emitter.prototype.on =
+Emitter.prototype.addEventListener = function(event, fn){
   this._callbacks = this._callbacks || {};
   (this._callbacks[event] = this._callbacks[event] || [])
     .push(fn);
@@ -620,7 +628,7 @@ Emitter.prototype.once = function(event, fn){
     fn.apply(this, arguments);
   }
 
-  fn._off = on;
+  on.fn = fn;
   this.on(event, on);
   return this;
 };
@@ -637,7 +645,8 @@ Emitter.prototype.once = function(event, fn){
 
 Emitter.prototype.off =
 Emitter.prototype.removeListener =
-Emitter.prototype.removeAllListeners = function(event, fn){
+Emitter.prototype.removeAllListeners =
+Emitter.prototype.removeEventListener = function(event, fn){
   this._callbacks = this._callbacks || {};
 
   // all
@@ -657,8 +666,14 @@ Emitter.prototype.removeAllListeners = function(event, fn){
   }
 
   // remove specific handler
-  var i = index(callbacks, fn._off || fn);
-  if (~i) callbacks.splice(i, 1);
+  var cb;
+  for (var i = 0; i < callbacks.length; i++) {
+    cb = callbacks[i];
+    if (cb === fn || cb.fn === fn) {
+      callbacks.splice(i, 1);
+      break;
+    }
+  }
   return this;
 };
 
@@ -763,7 +778,7 @@ ColorPicker.prototype.choose = function(e) {
     e.preventDefault();
     color = e.target.getAttribute('href');
   }
-  this.change(color);
+  this.value(color);
 };
 
 
@@ -775,11 +790,7 @@ ColorPicker.prototype.change = function(e) {
   if (e && e.target) {
     color = e.target.value;
   }
-  if (validColor(color)) {
-    this.editor.value = color;
-    this.editor.style.borderColor = color;
-    this.emit('change', color);
-  }
+  this.value(color);
 };
 
 
@@ -788,10 +799,13 @@ ColorPicker.prototype.change = function(e) {
  */
 ColorPicker.prototype.value = function(color) {
   if (!color) {
-    // getter
     return this.editor.value;
   }
-  this.change(color);
+  if (validColor(color)) {
+    this.editor.value = color;
+    this.editor.style.borderColor = color;
+    this.emit('change', color);
+  }
 };
 
 /**
@@ -840,7 +854,7 @@ function createPicker(choices, color) {
     chooser: chooser,
     editor: editor
   };
-};
+}
 
 
 /**
@@ -875,13 +889,13 @@ function createEditor(color) {
  * Check if the color is valid.
  */
 function validColor(color) {
-  if (!color) {
-    return false;
-  }
-  return /^#[0-9a-zA-Z]{6}$/.test(color);
+  return color.match(/^#[0-9a-fA-F]{6}$/) || color.match(/^#[0-9a-fA-F]{3}$/);
 }
 
 });
+
+
+
 
 
 
@@ -890,13 +904,15 @@ require.alias("component-events/index.js", "events/index.js");
 require.alias("component-event/index.js", "component-events/deps/event/index.js");
 
 require.alias("component-delegate/index.js", "component-events/deps/delegate/index.js");
-require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+require.alias("discore-closest/index.js", "component-delegate/deps/closest/index.js");
+require.alias("discore-closest/index.js", "component-delegate/deps/closest/index.js");
+require.alias("component-matches-selector/index.js", "discore-closest/deps/matches-selector/index.js");
 require.alias("component-query/index.js", "component-matches-selector/deps/query/index.js");
 
+require.alias("discore-closest/index.js", "discore-closest/index.js");
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
 require.alias("component-emitter/index.js", "color-picker/deps/emitter/index.js");
 require.alias("component-emitter/index.js", "emitter/index.js");
-require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("color-picker/index.js", "color-picker/index.js");
